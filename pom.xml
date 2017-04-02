@@ -17,8 +17,8 @@
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
                     <dockerDirectory>docker</dockerDirectory>
-                    <dockerHost>tcp://192.168.99.100:2376</dockerHost>
-                    <dockerCertPath>C:\Users\z002vn6r\.docker\machine\machines\default</dockerCertPath>
+                    <dockerHost>https://192.168.99.100:2376</dockerHost>
+                    <dockerCertPath>C:/Users/z002vn6r/.docker/machine/machines/default</dockerCertPath>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
