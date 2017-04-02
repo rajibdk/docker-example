@@ -6,29 +6,28 @@
     <version>1.0</version>
 
     <properties>
-        <docker.repository>https://hub.docker.com/</docker.repository>
         <docker.image.prefix>rajibdk</docker.image.prefix>
     </properties>
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.spotify</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.4.10</version>
-                    <configuration>
-                        <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                        <dockerDirectory>docker</dockerDirectory>
-                        <resources>
-                            <resource>
-                                <targetPath>/</targetPath>
-                                <directory>${project.build.directory}</directory>
-                                <include>${project.build.finalName}.jar</include>
-                            </resource>
-                        </resources>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.10</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>docker</dockerDirectory>
+                    <dockerHost>https://192.168.99.100:2376</dockerHost>
+                    <dockerCertPath>C:\Users\z002vn6r\.docker\machine\machines\default</dockerCertPath>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
