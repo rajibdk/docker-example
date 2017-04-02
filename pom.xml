@@ -7,11 +7,11 @@
 
     <distributionManagement>
         <repository>
+            <id>gene</id>
+            <name>rajib</name>
             <uniqueVersion>false</uniqueVersion>
-            <id>personal</id>
-            <name>Personal Repository</name>
-            <url>file:///tmp/</url>
-            <layout>default</layout>
+            <layout>legacy</layout>
+            <url>https://index.docker.io/v1/</url>
         </repository>
     </distributionManagement>
 
