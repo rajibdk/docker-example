@@ -7,11 +7,11 @@
 
     <distributionManagement>
         <repository>
-            <id>gene</id>
+            <id>localRepo</id>
             <name>rajib</name>
             <uniqueVersion>false</uniqueVersion>
             <layout>legacy</layout>
-            <url>https://registry.hub.docker.com/u/rajibdk/</url>
+            <url>file:///tmp/</url>
         </repository>
     </distributionManagement>
 
@@ -31,17 +31,36 @@
                     <groupId>com.spotify</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>0.4.10</version>
-                    <configuration>
-                        <imageName>helloworld</imageName>
-                        <dockerDirectory>docker</dockerDirectory>
-                        <resources>
-                            <resource>
-                                <targetPath>/</targetPath>
-                                <directory>${project.build.directory}</directory>
-                                <include>${project.build.finalName}.jar</include>
-                            </resource>
-                        </resources>
-                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>build-image</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>tag-image</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>tag</goal>
+                            </goals>
+                            <configuration>
+                                <image>helloworld:${project.version}</image>
+                                <newName>https://registry.hub.docker.com/u/rajibdk/helloworld:${project.version}</newName>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>push-image</id>
+                            <phase>deploy</phase>
+                            <goals>
+                                <goal>push</goal>
+                            </goals>
+                            <configuration>
+                                <imageName>https://registry.hub.docker.com/u/rajibdk/helloworld:${project.version}</imageName>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
