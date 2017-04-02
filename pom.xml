@@ -30,34 +30,16 @@
                 <plugin>
                     <groupId>com.spotify</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.2.3</version>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>build</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <version>1.0</version>
                     <configuration>
-                        <dockerDirectory>${project.build.directory}/classes</dockerDirectory>
-                        <pushImage>true</pushImage>
-                        <imageName>https://registry.hub.docker.com/u/rajibdk/${project.artifactId}:${git.commit.id.abbrev}</imageName>
+                        <imageName>helloworld</imageName>
+                        <dockerDirectory>docker</dockerDirectory>
                         <resources>
                             <resource>
                                 <targetPath>/</targetPath>
-                                <directory>${project.basedir}</directory>
-                                <excludes>
-                                    <exclude>target/**/*</exclude>
-                                    <exclude>pom.xml</exclude>
-                                    <exclude>*.iml</exclude>
-                                </excludes>
-                            </resource>
-                            <rescource>
-                                <targetPath>/</targetPath>
                                 <directory>${project.build.directory}</directory>
-                                <include>helloworld-1.0.jar</include>
-                            </rescource>
+                                <include>${project.build.finalName}.jar</include>
+                            </resource>
                         </resources>
                     </configuration>
                 </plugin>
