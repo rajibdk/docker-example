@@ -5,6 +5,16 @@
     <artifactId>helloworld</artifactId>
     <version>1.0</version>
 
+    <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>personal</id>
+            <name>Personal Repository</name>
+            <url>file:///tmp/</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
