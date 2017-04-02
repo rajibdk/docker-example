@@ -46,6 +46,9 @@
                                 <goal>tag</goal>
                             </goals>
                             <configuration>
+                                <imageName>${project.artifactId}</imageName>
+                                <dockerDirectory>docker</dockerDirectory>
+                                <dockerImageTags>${project.version}</dockerImageTags>
                                 <image>helloworld:${project.version}</image>
                                 <newName>https://registry.hub.docker.com/u/rajibdk/helloworld:${project.version}</newName>
                             </configuration>
@@ -57,6 +60,9 @@
                                 <goal>push</goal>
                             </goals>
                             <configuration>
+                                <imageName>${project.artifactId}</imageName>
+                                <dockerDirectory>docker</dockerDirectory>
+                                <dockerImageTags>${project.version}</dockerImageTags>
                                 <imageName>https://registry.hub.docker.com/u/rajibdk/helloworld:${project.version}</imageName>
                             </configuration>
                         </execution>
