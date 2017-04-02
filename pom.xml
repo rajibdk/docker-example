@@ -6,10 +6,8 @@
     <version>1.0</version>
 
     <properties>
-        <docker.skip>false</docker.skip>
         <docker.repository>https://hub.docker.com/</docker.repository>
         <docker.image.prefix>rajibdk</docker.image.prefix>
-        <DOCKER_HOST>tcp://192.168.99.100:2376</DOCKER_HOST>
     </properties>
 
     <distributionManagement>
@@ -37,66 +35,18 @@
                 <plugin>
                     <groupId>com.spotify</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.4.10</version>
+                    <version>0.4.11</version>
                     <configuration>
                         <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                        <baseImage>java:openjdk-8-jdk-alpine</baseImage>
-                        <entryPoint>["java","-jar","/${project.build.finalName}.jar"]</entryPoint>
-                        <imageTags>
-                            <imageTag>${project.version}</imageTag>
-                            <imageTag>latest</imageTag>
-                        </imageTags>
-                        <serverId>docker-hub</serverId>
-                        <skipDockerBuild>${docker.skip}</skipDockerBuild>
+                        <dockerDirectory>docker</dockerDirectory>
                         <resources>
                             <resource>
                                 <targetPath>/</targetPath>
                                 <directory>${project.build.directory}</directory>
                                 <include>${project.build.finalName}.jar</include>
                             </resource>
-                            <resource>
-                                <targetPath>/</targetPath>
-                                <directory>${project.basedir}/docker</directory>
-                                <include>*</include>
-                            </resource>
                         </resources>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>build-image</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>build</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>tag-image-version</id>
-                            <phase>deploy</phase>
-                            <goals>
-                                <goal>tag</goal>
-                            </goals>
-                            <configuration>
-                                <image>${docker.image.prefix}/${project.artifactId}</image>
-                                <newName>
-                                    ${docker.repository}/${docker.image.prefix}/${project.artifactId}:${project.version}
-                                </newName>
-                                <pushImage>true</pushImage>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>tag-image-latest</id>
-                            <phase>deploy</phase>
-                            <goals>
-                                <goal>tag</goal>
-                            </goals>
-                            <configuration>
-                                <image>${docker.image.prefix}/${project.artifactId}</image>
-                                <newName>${docker.repository}/${docker.image.prefix}/${project.artifactId}:latest
-                                </newName>
-                                <pushImage>true</pushImage>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
