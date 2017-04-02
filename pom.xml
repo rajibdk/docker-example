@@ -5,6 +5,12 @@
     <artifactId>helloworld</artifactId>
     <version>1.0</version>
 
+    <properties>
+        <docker.skip>false</docker.skip>
+        <docker.repository>https://hub.docker.com/</docker.repository>
+        <docker.image.prefix>rajibdk</docker.image.prefix>
+    </properties>
+
     <distributionManagement>
         <repository>
             <id>localRepo</id>
@@ -31,6 +37,29 @@
                     <groupId>com.spotify</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>0.4.10</version>
+                    <configuration>
+                        <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                        <baseImage>java:openjdk-8-jdk-alpine</baseImage>
+                        <entryPoint>["java","-jar","/${project.build.finalName}.jar"]</entryPoint>
+                        <imageTags>
+                            <imageTag>${project.version}</imageTag>
+                            <imageTag>latest</imageTag>
+                        </imageTags>
+                        <serverId>docker-hub</serverId>
+                        <skipDockerBuild>${docker.skip}</skipDockerBuild>
+                        <resources>
+                            <resource>
+                                <targetPath>/</targetPath>
+                                <directory>${project.build.directory}</directory>
+                                <include>${project.build.finalName}.jar</include>
+                            </resource>
+                            <resource>
+                                <targetPath>/</targetPath>
+                                <directory>${project.basedir}/docker</directory>
+                                <include>*</include>
+                            </resource>
+                        </resources>
+                    </configuration>
                     <executions>
                         <execution>
                             <id>build-image</id>
@@ -40,30 +69,30 @@
                             </goals>
                         </execution>
                         <execution>
-                            <id>tag-image</id>
-                            <phase>package</phase>
+                            <id>tag-image-version</id>
+                            <phase>deploy</phase>
                             <goals>
                                 <goal>tag</goal>
                             </goals>
                             <configuration>
-                                <imageName>${project.artifactId}</imageName>
-                                <dockerDirectory>docker</dockerDirectory>
-                                <dockerImageTags>${project.version}</dockerImageTags>
-                                <image>helloworld:${project.version}</image>
-                                <newName>https://registry.hub.docker.com/u/rajibdk/helloworld:${project.version}</newName>
+                                <image>${docker.image.prefix}/${project.artifactId}</image>
+                                <newName>
+                                    ${docker.repository}/${docker.image.prefix}/${project.artifactId}:${project.version}
+                                </newName>
+                                <pushImage>true</pushImage>
                             </configuration>
                         </execution>
                         <execution>
-                            <id>push-image</id>
+                            <id>tag-image-latest</id>
                             <phase>deploy</phase>
                             <goals>
-                                <goal>push</goal>
+                                <goal>tag</goal>
                             </goals>
                             <configuration>
-                                <imageName>${project.artifactId}</imageName>
-                                <dockerDirectory>docker</dockerDirectory>
-                                <dockerImageTags>${project.version}</dockerImageTags>
-                                <imageName>https://registry.hub.docker.com/u/rajibdk/helloworld:${project.version}</imageName>
+                                <image>${docker.image.prefix}/${project.artifactId}</image>
+                                <newName>${docker.repository}/${docker.image.prefix}/${project.artifactId}:latest
+                                </newName>
+                                <pushImage>true</pushImage>
                             </configuration>
                         </execution>
                     </executions>
