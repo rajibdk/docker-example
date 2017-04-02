@@ -9,6 +9,7 @@
         <docker.skip>false</docker.skip>
         <docker.repository>https://hub.docker.com/</docker.repository>
         <docker.image.prefix>rajibdk</docker.image.prefix>
+        <DOCKER_HOST>tcp://192.168.99.100:2376</DOCKER_HOST>
     </properties>
 
     <distributionManagement>
