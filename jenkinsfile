@@ -1,16 +1,16 @@
-node {
-    // Get Artifactory server instance, defined in the Artifactory Plugin administration page.
-    // def server = Artifactory.server "SERVER_ID"
-    // Create an Artifactory Maven instance.
-    def rtMaven = Artifactory.newMavenBuild()
-
-    stage 'Clone sources'
-    git url: 'https://github.com/jfrogdev/project-examples.git'
-
-    stage 'Artifactory configuration'
-    // Tool name from Jenkins configuration
-    rtMaven.tool = "Maven-3.3.9"
-   
-    stage 'Maven build'
-    def buildInfo = rtMaven.run pom: 'maven-example/pom.xml', goals: 'clean install'
+node{
+  stage ('Build') {
+ 
+    git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
+ 
+    withMaven(
+        maven: 'M3', // Maven installation declared in the Jenkins "Global Tool Configuration"
+        mavenSettingsConfig: 'my-maven-settings', // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+        mavenLocalRepo: '.repository') {
+ 
+      // Run the maven build
+      sh "mvn clean install"
+ 
+    } // withMaven will discover the generated Maven artifacts, JUnit reports and FindBugs reports
+  }
 }
